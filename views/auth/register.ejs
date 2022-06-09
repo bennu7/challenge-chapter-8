@@ -4,50 +4,67 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css"
+    />
     <title>Register</title>
   </head>
   <body>
-    <h2>Register user</h2>
+    <nav
+      class="navbar navbar-expand-lg navbar-light"
+      style="background-color: #db565b"
+    >
+      <a class="navbar-brand text-white" href="#">Register</a>
+    </nav>
 
-    <form action="/api/v1/users" method="post">
-      <p>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          required
-          placeholder="insert your name"
-        />
-      </p>
-      <p>
-        <input
-          type="text"
-          id="username"
-          name="username"
-          required
-          placeholder="insert your username"
-        />
-      </p>
-      <p>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          required
-          placeholder="insert your email"
-        />
-      </p>
-      <p>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          required
-          placeholder="insert your password"
-        />
-      </p>
+    <div class="container mt-4">
+      <h2>Register user</h2>
 
-      <p><input type="submit" name="" id="" value="Daftar" /></p>
-    </form>
+      <form action="/api/v1/users"" method="post">
+        <div class="form-group">
+          <label>Masukkan name anda</label>
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            name="name"
+            placeholder="nama"
+          />
+        </div>
+        <div class="form-group">
+          <label>Masukkan username anda</label>
+          <input
+            type="text"
+            class="form-control"
+            id="username"
+            name="username"
+            placeholder="username"
+          />
+        </div>
+        <div class="form-group">
+          <label>Masukkan email anda</label>
+          <input
+            type="email"
+            class="form-control"
+            id="email"
+            name="email"
+            placeholder="email"
+          />
+        </div>
+        <div class="form-group">
+          <label>Masukkan password anda</label>
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            name="password"
+            placeholder="password"
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">Daftar</button>
+      </form>
+    </div>
+
   </body>
 </html>
