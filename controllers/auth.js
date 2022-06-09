@@ -60,22 +60,20 @@ module.exports = {
           email: userExist.email,
         };
 
-        // untuk mengirim token, menyesuaikan degan data & JWT PRIVATE KEY
-        const token = await jwt.sign(data, JWT_SECRET_KEY);
+        const secret = JWT_SECRET_KEY + userExist.password;
+
+        // tambahkan waktu expire
+        const token = await jwt.sign(data, secret, { expiresIn: "5m" });
 
         const link = `${req.protocol}://${req.get(
           "host"
-        )}/auth/reset-password?token=${token}`;
+        )}/auth/reset-password/${userExist.id}?token=${token}`;
 
         const html = `
           <h2>hii ${userExist.name} </h2>
             <p>Silahkan klik link di bawah ini untuk mereset password</p>
             <p> link => ${link} </p>
         `;
-
-        // console.log(
-        //   mailerHelper.sendEmail(userExist.email, "reset password", html)
-        // );
 
         mailerHelper.sendEmail(userExist.email, "reset password", html);
 
@@ -98,6 +96,9 @@ module.exports = {
   reset: async (req, res) => {
     try {
       const token = req.query.token;
+      const user_id = req.params.userId;
+
+      console.log("user id => ", user_id);
 
       const { new_password, new_password_confirm } = req.body;
 
@@ -112,7 +113,15 @@ module.exports = {
         });
       }
 
-      const data = jwt.verify(token, JWT_SECRET_KEY);
+      const user = await User.findOne({
+        where: {
+          id: user_id,
+        },
+      });
+
+      const secret = JWT_SECRET_KEY + user.password;
+
+      const data = await jwt.verify(token, secret);
 
       const encrypedNewPassword = await bcrypt.hash(new_password, 10);
 
@@ -121,8 +130,6 @@ module.exports = {
           email: data.email,
         },
       };
-
-      console.log(query);
 
       const updatedPassword = await User.update(
         {
