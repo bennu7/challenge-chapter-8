@@ -1,0 +1,1571 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Example API DB server",
+    "version": "1.0.0",
+    "title": "Instagram API",
+    "contact": {
+      "email": "laluibnuhidayatullah@gmail.com"
+    }
+  },
+  "host": "https://chapter6-fix.herokuapp.com",
+  "basePath": "/api/v1",
+  "tags": [
+    {
+      "name": "Login",
+      "description": "login user"
+    },
+    {
+      "name": "User",
+      "description": "data user"
+    },
+    {
+      "name": "Posts",
+      "description": "data post"
+    },
+    {
+      "name": "Post like",
+      "description": "data like"
+    },
+    {
+      "name": "Post comment",
+      "description": "data comment"
+    }
+  ],
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "paths": {
+    "api/v1/login":{
+      "post":{
+        "tags":[
+          "Login"
+        ],
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters":[
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ], 
+        "responses":{
+          "200": {
+            "description": "berhasil login",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "message": {
+                  "type": "string",
+                  "example": "berhasil loginr"
+                },
+                "data": {
+                  "$ref": "#/definitions/Login"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "user not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "object",
+                  "properties":{
+                    "status":{
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User tidak ditemukan"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/users": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "username": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "data user instagram baru telah di buat",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "message": {
+                  "type": "string",
+                  "example": "berhasil membuat data user"
+                },
+                "data": {
+                  "$ref": "#/definitions/User"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "bad request",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "some fields is required"
+                },
+                "errors": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "example": "name is required!"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "email is required!"
+                    },
+                    "username": {
+                      "type": "string",
+                      "example": "username is required!"
+                    },
+                    "password": {
+                      "type": "string",
+                      "example": "password is required!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "berhasil mengambil semua data user",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "message": {
+                  "type": "string",
+                  "example": "berhasil GET data user"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/User"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/users/{user_id}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "berhasil mengambil data",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "message": {
+                  "type": "string",
+                  "example": "berhasil mengambil detail user"
+                },
+                "data": {
+                  "$ref": "#/definitions/User"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "user id tidak ditemukan",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": "false"
+                },
+                "message": {
+                  "type": "string",
+                  "example": "user not found"
+                },
+                "errors": {
+                  "type": "object",
+                  "properties": {
+                    "user_id": {
+                      "type": "string",
+                      "example": "user tidak dapat ditemukan"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "username": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "message": {
+                  "type": "string",
+                  "example": "berhasil update user!"
+                },
+                "data": {
+                  "$ref": "#/definitions/UserUpdate"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "user tidak ditemukan",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "message": {
+                  "type": "string",
+                  "example": "bad request"
+                },
+                "errors": {
+                  "type": "object",
+                  "properties": {
+                    "user_id": {
+                      "type": "string",
+                      "example": "id not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "message": {
+                  "type": "string",
+                  "example": "berhasil menghapus user"
+                },
+                "data": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "user tidak ditemukan",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "message": {
+                  "type": "string",
+                  "example": "bad request"
+                },
+                "errors": {
+                  "type": "object",
+                  "properties": {
+                    "user_id": {
+                      "type": "string",
+                      "example": "user tidak dapat ditemukan"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/posts": {
+      "post": {
+        "tags": [
+          "Posts"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "source_image": {
+                  "type": "string"
+                },
+                "post_content": {
+                  "type": "string"
+                },
+                "user_id": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "buat postingan baru",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "message": {
+                  "type": "string",
+                  "example": "berhasil membuat postingan baru"
+                },
+                "data": {
+                  "$ref": "#/definitions/Posts"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "bad request",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "some fields is required"
+                },
+                "errors": {
+                  "type": "object",
+                  "properties": {
+                    "post_content": {
+                      "type": "string",
+                      "example": "post_content is required!"
+                    },
+                    "source_image": {
+                      "type": "string",
+                      "example": "source_image is required!"
+                    },
+                    "user_id": {
+                      "type": "string",
+                      "example": "user_id is required!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Posts"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "untuk mengambil semua data posts",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "message": {
+                  "type": "string",
+                  "example": "sukses mengambil semua data post"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Posts"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/posts/{post_id}": {
+      "get": {
+        "tags": [
+          "Posts"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "post_id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "untuk mengambil detail data",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "message": {
+                  "type": "string",
+                  "example": "berhasil mengambil data channel"
+                },
+                "data": {
+                  "$ref": "#/definitions/Posts"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "id post tidak ditemukan",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "post_id tidak ditemukan"
+                },
+                "errors": {
+                  "type": "object",
+                  "properties": {
+                    "user_id": {
+                      "type": "string",
+                      "example": "could not found post id"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Posts"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "post_id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "source_image": {
+                  "type": "string"
+                },
+                "post_content": {
+                  "type": "string"
+                },
+                "user_id": {
+                  "type": "integer",
+                  "example": 2
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "menghapus data post",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "message": {
+                  "type": "string",
+                  "example": "berhasil update data post"
+                },
+                "data": {
+                  "$ref": "#/definitions/Posts"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "post_id tidak ditemukan",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "bad request"
+                },
+                "errors": {
+                  "type": "object",
+                  "properties": {
+                    "channel_id": {
+                      "type": "string",
+                      "example": "could not found id post "
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Posts"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "post_id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "menghapus data post",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "message": {
+                  "type": "string",
+                  "example": "data post berhasil hapus"
+                },
+                "data": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "post tidak ditemukan",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "id post tidak ditemukan"
+                },
+                "errors": {
+                  "type": "object",
+                  "properties": {
+                    "user_id": {
+                      "type": "string",
+                      "example": "could not found id post"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/likes": {
+      "post": {
+        "tags": [
+          "Post like"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "post_id": {
+                  "type": "string"
+                },
+                "user_id": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "membuat data post_like ",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "message": {
+                  "type": "string",
+                  "example": "data post_like berhasil dibuat"
+                },
+                "data": {
+                  "$ref": "#/definitions/Post_like"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "bad request",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "some fields is required!"
+                },
+                "errors": {
+                  "type": "object",
+                  "properties": {
+                    "post_id": {
+                      "type": "string",
+                      "example": "post_id is required!"
+                    },
+                    "user_id": {
+                      "type": "string",
+                      "example": "user_id is required!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Post like"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "mengambil semua data post_like",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "message": {
+                  "type": "string",
+                  "example": "sukses mengambil semua data post like"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Post_like"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/likes/{like_id}": {
+      "get": {
+        "tags": [
+          "Post like"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "like_id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "berhasil mengambil data",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "message": {
+                  "type": "string",
+                  "example": "berhasil mengambil detail post like"
+                },
+                "data": {
+                  "$ref": "#/definitions/Post_like"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "tidak ditemukan id",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "id tidak ditemukan"
+                },
+                "errors": {
+                  "type": "object",
+                  "properties": {
+                    "like_id": {
+                      "type": "string",
+                      "example": "could not found id like"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Post like"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "like_id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "post_id": {
+                  "type": "integer",
+                  "example": 1
+                },
+                "user_id": {
+                  "type": "integer",
+                  "example": 2
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "message": {
+                  "type": "string",
+                  "example": "sukses update data post_like"
+                },
+                "data": {
+                  "$ref": "#/definitions/Post_like"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "id tidak ditemukan",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "id tidak ditemukan"
+                },
+                "errors": {
+                  "type": "object",
+                  "properties": {
+                    "video_id": {
+                      "type": "string",
+                      "example": "could not found id like"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Post like"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "like_id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "message": {
+                  "type": "string",
+                  "example": "berhasil menghapus post_like"
+                },
+                "data": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "id tidak ditemukan",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "id tidak ditemukan"
+                },
+                "errors": {
+                  "type": "object",
+                  "properties": {
+                    "video_id": {
+                      "type": "string",
+                      "example": "could not found id like"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/comments": {
+      "post": {
+        "tags": [
+          "Post comment"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "post_id": {
+                  "type": "integer"
+                },
+                "user_id": {
+                  "type": "integer"
+                },
+                "comment": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "membuat post comment baru",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "message": {
+                  "type": "string",
+                  "example": "data post comment berhasil dibuat"
+                },
+                "data": {
+                  "$ref": "#/definitions/Post_comment"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "bad request",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "some fields is required"
+                },
+                "errors": {
+                  "type": "object",
+                  "properties": {
+                    "post_id": {
+                      "type": "integer",
+                      "example": "post_id is required!"
+                    },
+                    "user_id": {
+                      "type": "string",
+                      "example": "user_id is required!"
+                    },
+                    "comment": {
+                      "type": "string",
+                      "example": "comment is required!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Post comment"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "berhasil mengambil data",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "message": {
+                  "type": "string",
+                  "example": "berhasil mengambil semua data post comment"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Post_comment"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/comments/{comment_id}": {
+      "get": {
+        "tags": [
+          "Post comment"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "comment_id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "berhasil mengambil data",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "message": {
+                  "type": "string",
+                  "example": "berhasil mengambil detail data post comment"
+                },
+                "data": {
+                  "$ref": "#/definitions/Post_comment"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "id tidak ditemukan",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "id tidak ditemukan"
+                },
+                "errors": {
+                  "type": "object",
+                  "properties": {
+                    "video_id": {
+                      "type": "string",
+                      "example": "could not found comment_id : 12" 
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Post comment"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "comment_id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "post_id": {
+                  "type": "integer"
+                },
+                "user_id": {
+                  "type": "integer"
+                },
+                "comment": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "message": {
+                  "type": "string",
+                  "example": "post comment berhasil di update"
+                },
+                "data": {
+                  "$ref": "#/definitions/Post_commentUpdate"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "post comment id tidak ditemukan",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "id not found"
+                },
+                "errors": {
+                  "type": "object",
+                  "properties": {
+                    "comment_id": {
+                      "type": "string",
+                      "example": "could not found comment_id : 12"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Post comment"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "comment_id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "message": {
+                  "type": "string",
+                  "example": "post comment berhasil di hapus"
+                },
+                "data": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "id tidak ditemukan",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "id tidak ditemukan"
+                },
+                "errors": {
+                  "type": "object",
+                  "properties": {
+                    "comment_id": {
+                      "type": "string",
+                      "example": "could not found comment_id : 12"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Login": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string",
+          "example": "ibnu"
+        },
+        "password": {
+          "type": "string",
+          "example": "password"
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "example": "ibnu"
+        },
+        "email": {
+          "type": "string",
+          "example": "ibnu@mail.com"
+        },
+        "username": {
+          "type": "string",
+          "example": "bennu7"
+        },
+        "password": {
+          "type": "string",
+          "example": "password"
+        }
+      }
+    },
+    "UserUpdate": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "example": "binar"
+        },
+        "email": {
+          "type": "string",
+          "example": "binar@mail.com"
+        },
+        "username": {
+          "type": "string",
+          "example": "binar7"
+        },
+        "password": {
+          "type": "string",
+          "example": "password"
+        }
+      }
+    },
+    "Posts": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "example": 1
+        },
+        "source_image": {
+          "type": "string",
+          "example": "https://instagram.com/binar/media/1"
+        },
+        "post_content": {
+          "type": "string",
+          "example": "di binar sangat menyenangkan"
+        },
+        "user_id": {
+          "type": "integer",
+          "example": 2
+        }
+      }
+    },
+    "Post_like": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "example": 1
+        },
+        "post_id": {
+          "type": "integer",
+          "example": 2
+        },
+        "user_id": {
+          "type": "integer",
+          "example": 1
+        }
+      }
+    },
+    "Post_comment": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "example": 1
+        },
+        "post_id": {
+          "type": "integer",
+          "example": 1
+        },
+        "user_id": {
+          "type": "integer",
+          "example": 3
+        },
+        "comment": {
+          "type": "string",
+          "example": "indah juga, jadi pengen ke sana"
+        }
+      }
+    },
+    "Post_commentUpdate": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "example": 1
+        },
+        "post_id": {
+          "type": "integer",
+          "example": 2
+        },
+        "user_id": {
+          "type": "integer",
+          "example": 5
+        },
+        "comment": {
+          "type": "string",
+          "example": "nice place, wajib ke sini tahun ini"
+        }
+      }
+    }
+  }
+}
